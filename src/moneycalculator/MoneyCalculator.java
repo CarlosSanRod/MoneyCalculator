@@ -10,12 +10,37 @@ import java.util.Scanner;
 public class MoneyCalculator {
     double amount;
     double exchangerate;
+    String currency;
     
     public static void main(String[] args) throws IOException {
         MoneyCalculator moneycalculator = new MoneyCalculator();
         moneycalculator.control();
     }
 
+        private void control() throws IOException {
+        input();
+        process();
+        output();
+    }
+
+    private void input() {
+        System.out.println("Introduce una cantidad: ");
+        Scanner scanner = new Scanner(System.in);
+        amount = scanner.nextDouble();
+        
+        System.out.println("Introduce una divisa: ");
+        currency = scanner.next();
+    }
+
+    private void process() throws IOException {
+        exchangerate = getExchangeRate(currency,"EUR");
+    }
+
+    private void output() {
+        System.out.println(amount + " " + currency + " = " +
+                amount*exchangerate + " euros");
+    }
+    
     private static double getExchangeRate(String from, String to) throws IOException {
         URL url = 
             new URL("https://free.currconv.com/api/v7/convert?q=" +
@@ -28,25 +53,5 @@ public class MoneyCalculator {
             String line1 = line.substring(line.indexOf(to)+5, line.indexOf("}"));
             return Double.parseDouble(line1);
         }
-    }
-    
-    private void control() throws IOException {
-        input();
-        process();
-        output();
-    }
-
-    private void input() {
-        System.out.println("Introduce una cantidad de dólares: ");
-        Scanner scanner = new Scanner(System.in);
-        amount = scanner.nextDouble();
-    }
-
-    private void process() throws IOException {
-        exchangerate = getExchangeRate("USD","EUR");
-    }
-
-    private void output() {
-        System.out.println(amount + " $ = " + amount*exchangerate + " €");
     }
 }
