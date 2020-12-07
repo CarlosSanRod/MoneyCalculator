@@ -10,14 +10,15 @@ import java.util.Scanner;
 public class MoneyCalculator {
     double amount;
     double exchangerate;
-    String currency;
+    String currencyFrom;
+    String currencyTo;
     
     public static void main(String[] args) throws IOException {
         MoneyCalculator moneycalculator = new MoneyCalculator();
         moneycalculator.control();
     }
 
-        private void control() throws IOException {
+    private void control() throws IOException {
         input();
         process();
         output();
@@ -28,19 +29,22 @@ public class MoneyCalculator {
         Scanner scanner = new Scanner(System.in);
         amount = scanner.nextDouble();
         
-        System.out.println("Introduce una divisa: ");
-        currency = scanner.next();
+        System.out.println("Introduce una divisa inicial: ");
+        currencyFrom = scanner.next();
+        
+        System.out.println("Introduce una divisa final: ");
+        currencyTo = scanner.next();
     }
 
     private void process() throws IOException {
-        exchangerate = getExchangeRate(currency,"EUR");
+        exchangerate = getExchangeRate(currencyFrom,currencyTo);
     }
 
     private void output() {
-        System.out.println(amount + " " + currency + " = " +
-                amount*exchangerate + " euros");
+        System.out.println(amount + " " + currencyFrom + " = " +
+                amount*exchangerate + " " + currencyTo);
     }
-    
+
     private static double getExchangeRate(String from, String to) throws IOException {
         URL url = 
             new URL("https://free.currconv.com/api/v7/convert?q=" +
